@@ -1,6 +1,6 @@
 
-Award a Trophy
---------------
+Web Socket Test
+---------------
 
-This is a very short Tsugi tool.
+Build / test Tsugi's web socket support.
 
