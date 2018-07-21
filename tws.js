@@ -21,7 +21,7 @@ function TsugiWebSocket () {
         }
 
         $.ajax({
-            url: addSession(_TSUGI_WEB_SOCKET_FALLBACK + '?since=' + self.micro_time),
+            url: addSession(_TSUGI.web_socket_fallback + '?since=' + self.micro_time),
             type: 'GET',
             dataType:'json',
             cache: false,
@@ -53,7 +53,7 @@ function TsugiWebSocket () {
         console.log('Startup called '+self.id);
         // Make sure we don't get old messages so catch us up.
         $.ajax({
-            url: addSession(_TSUGI_WEB_SOCKET_FALLBACK + '?since=' + self.micro_time),
+            url: addSession(_TSUGI.web_socket_fallback + '?since=' + self.micro_time),
             type: 'GET',
             dataType:'json',
             cache: false,
@@ -82,7 +82,7 @@ function TsugiWebSocket () {
         this.timeout = false;
 
         // Send the data using post and immediately get new messages when post completes
-        var posting = $.post( addSession(_TSUGI_WEB_SOCKET_FALLBACK), { message: message } );
+        var posting = $.post( addSession(_TSUGI.web_socket_fallback), { message: message } );
         posting.done(function( data ) {
             console.log('Post success', self.id);
             self.handleTime();

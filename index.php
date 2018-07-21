@@ -34,7 +34,7 @@ $OUTPUT->footerStart();
 ?>
  
   <script language="javascript" type="text/javascript">
-_TSUGI_WEB_SOCKET_FALLBACK = '<?= $socket_api ?>';
+_TSUGI.web_socket_fallback = '<?= $socket_api ?>';
   </script>
 
   <script language="javascript" type="text/javascript" src="tws.js"></script>
