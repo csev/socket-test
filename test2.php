@@ -60,7 +60,7 @@ _TSUGI_WEB_SOCKET_FALLBACK = '<?= $socket_api ?>';
 
 var wsUri = "wss://echo.websocket.org/";
 global_web_socket = new TsugiWebSocket();
-global_web_socket = new WebSocket(wsUri);
+// global_web_socket = new WebSocket(wsUri);
 
 global_web_socket.onmessage = function(evt) { 
     writeToScreen('<span style="color: blue;">RECEIVE: ' + evt.data+'</span>');

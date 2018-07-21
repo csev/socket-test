@@ -53,6 +53,7 @@ _TSUGI_WEB_SOCKET_FALLBACK = '<?= $socket_api ?>';
   function testWebSocket()
   {
     websocket = new TsugiWebSocket(wsUri);
+    // websocket = new WebSocket(wsUri);
     websocket.onopen = function(evt) { onOpen(evt) };
     websocket.onclose = function(evt) { onClose(evt) };
     websocket.onmessage = function(evt) { onMessage(evt) };
