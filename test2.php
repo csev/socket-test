@@ -1,85 +1,27 @@
-<?php
-// https://github.com/tsugiproject/trophy
-require_once "../config.php";
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+    </head>
+    <body>
+        <div id="chat-messages" style="overflow-y: scroll; height: 100px; "></div>        
+        <input type="text" class="message">
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.js"></script>
+    <script>
+            var socket = io.connect("ws://127.0.0.1:2021");
 
-use \Tsugi\Util\U;
-use \Tsugi\Core\LTIX;
+            $('.message').on('change', function(){
+console.log('send message',$(this).val());
+                socket.emit('send message', $(this).val());
+                $(this).val('');
+            });
 
-// Handle all forms of launch
-$LTI = LTIX::requireData();
-
-// Render view
-$OUTPUT->header();
-?>
-  <title>WebSocket Test</title>
-<?php
-$OUTPUT->bodyStart();
-$OUTPUT->topNav();
-
-$OUTPUT->welcomeUserCourse();
-
-$socket_api = $CFG->wwwroot . '/api/socket';
-$socket = U::addSession($socket_api);
-
-// https://www.websocket.org/echo.html
-
-?>
-  <h2>WebSocket Interactive Test</h2>
-
-<a href="index.php">Echo Test</a>
-
-
-<div id="output"></div>
-
-<form action="#" id="messageForm">
-  <input type="text" name="message" placeholder="Message...">
-  <input type="submit" value="Send">
-  <input type="submit" value="Clear" onclick="$('#output').erase(); return false;">
-</form>
-
-<?php
-$OUTPUT->footerStart();
-?>
- 
-  <script language="javascript" type="text/javascript">
-_TSUGI.web_socket_fallback = '<?= $socket_api ?>';
-  </script>
-
-  <script language="javascript" type="text/javascript" src="tws.js"></script>
-
-<script>
-
-
-  function writeToScreen(message)
-  {
-    var pre = document.createElement("p");
-    pre.style.wordWrap = "break-word";
-    pre.innerHTML = message;
-    output.appendChild(pre);
-  }
-
-var wsUri = "wss://echo.websocket.org/";
-global_web_socket = new TsugiWebSocket();
-// global_web_socket = new WebSocket(wsUri);
-
-global_web_socket.onmessage = function(evt) { 
-    writeToScreen('<span style="color: blue;">RECEIVE: ' + evt.data+'</span>');
-    // Don't close
-};
-
-$( "#messageForm" ).submit(function( event ) {
- 
-  // Stop form from submitting normally
-  event.preventDefault();
- 
-  // Get some values from elements on the page:
-  var form = $( this )
-  var message = form.find( "input[name='message']" ).val();
-  console.log('Message',message);
-  global_web_socket.send(message);
-});
-</script>
-
-<?php
-$OUTPUT->footerEnd();
-
+            socket.on('new message', function(data){
+                $('#chat-messages').append('<p>' + data +'</p>');
+            });
+    </script>
+</html>

@@ -52,8 +52,9 @@ _TSUGI.web_socket_fallback = '<?= $socket_api ?>';
 
   function testWebSocket()
   {
-    websocket = new TsugiWebSocket(wsUri);
+    // websocket = new TsugiWebSocket(wsUri);
     // websocket = new WebSocket(wsUri);
+    websocket = new WebSocket('socketIO://localhost:2020/');
     websocket.onopen = function(evt) { onOpen(evt) };
     websocket.onclose = function(evt) { onClose(evt) };
     websocket.onmessage = function(evt) { onMessage(evt) };
