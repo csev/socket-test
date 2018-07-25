@@ -18,76 +18,26 @@ $OUTPUT->topNav();
 
 $OUTPUT->welcomeUserCourse();
 
-
-$socket_api = $CFG->wwwroot . '/api/socket';
-
-// https://www.websocket.org/echo.html
 ?>
-  <h2>WebSocket Echo Test</h2>
+  <h2>WebSocket Notify Test</h2>
 
-<a href="test2.php">Interactive Test</a>
+<p>This does not send back to the originating client so two clients are needed to test.
+Also there is no message history kept.  Notifications are given to active sockets.</p>
 
 <div id="output"></div>
+
+<form action="#" id="messageForm">
+  <input type="text" name="message" placeholder="Message...">
+  <input type="submit" value="Send">
+  <input type="submit" value="Clear" onclick="$('#output').erase(); return false;">
+</form>
 
 <?php
 $OUTPUT->footerStart();
 ?>
  
-  <script language="javascript" type="text/javascript">
-_TSUGI.web_socket_fallback = '<?= $socket_api ?>';
-  </script>
+<script>
 
-  <script language="javascript" type="text/javascript" src="tws.js"></script>
-
-  <script language="javascript" type="text/javascript">
-
-  var wsUri = "wss://echo.websocket.org/";
-  var output;
-
-  function init()
-  {
-    output = document.getElementById("output");
-    testWebSocket();
-  }
-
-  function testWebSocket()
-  {
-    // websocket = new TsugiWebSocket(wsUri);
-    // websocket = new WebSocket(wsUri);
-    websocket = new WebSocket('socketIO://localhost:2020/');
-    websocket.onopen = function(evt) { onOpen(evt) };
-    websocket.onclose = function(evt) { onClose(evt) };
-    websocket.onmessage = function(evt) { onMessage(evt) };
-    websocket.onerror = function(evt) { onError(evt) };
-  }
-
-  function onOpen(evt)
-  {
-    writeToScreen("Straight line Test CONNECTED");
-    doSend("WebSocket "+Math.random());
-  }
-
-  function onClose(evt)
-  {
-    writeToScreen("Straight line Test DISCONNECTED");
-  }
-
-  function onMessage(evt)
-  {
-    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-    websocket.close();
-  }
-
-  function onError(evt)
-  {
-    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-  }
-
-  function doSend(message)
-  {
-    writeToScreen("SENT: " + message);
-    websocket.send(message);
-  }
 
   function writeToScreen(message)
   {
@@ -97,9 +47,26 @@ _TSUGI.web_socket_fallback = '<?= $socket_api ?>';
     output.appendChild(pre);
   }
 
-  window.addEventListener("load", init, false);
+global_web_socket = new WebSocket('ws://localhost:2021/notify?xyzzy=42');
 
-  </script>
+global_web_socket.onmessage = function(evt) { 
+    writeToScreen('<span style="color: blue;">RECEIVE: ' + evt.data+'</span>');
+    // Don't close
+};
+
+$( "#messageForm" ).submit(function( event ) {
+ 
+  // Stop form from submitting normally
+  event.preventDefault();
+ 
+  // Get some values from elements on the page:
+  var form = $( this )
+  var message = form.find( "input[name='message']" ).val();
+  console.log('Sending',message);
+  global_web_socket.send(message);
+  form.find( "input[name='message']" ).val('');
+});
+</script>
 
 <?php
 $OUTPUT->footerEnd();
