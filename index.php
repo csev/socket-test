@@ -47,7 +47,7 @@ $OUTPUT->footerStart();
     output.appendChild(pre);
   }
 
-global_web_socket = new WebSocket('ws://localhost:2021/notify?xyzzy=42');
+global_web_socket = new WebSocket('ws://localhost:2021/notify?xyzzy=42&room=14');
 
 global_web_socket.onmessage = function(evt) { 
     writeToScreen('<span style="color: blue;">RECEIVE: ' + evt.data+'</span>');
