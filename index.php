@@ -26,16 +26,15 @@ Also there is no message history kept.  Notifications are given to active socket
 
 <div id="output"></div>
 
-<form action="#" id="messageForm">
+<form action="#" id="messageForm" style="display:none">
   <input type="text" name="message" placeholder="Message...">
   <input type="submit" value="Send">
-  <input type="submit" value="Clear" onclick="$('#output').erase(); return false;">
 </form>
 
 <?php
 $OUTPUT->footerStart();
 ?>
- 
+
 <script>
 
 
@@ -49,16 +48,32 @@ $OUTPUT->footerStart();
 
 global_web_socket = new WebSocket('ws://localhost:2021/notify?xyzzy=42&room=14');
 
-global_web_socket.onmessage = function(evt) { 
+global_web_socket.onclose = function(evt) {
+    if ( evt.code == 1006 ) {
+        writeToScreen('Websocket server is not available');
+    } else if ( evt.code ) {
+        writeToScreen('Websocket server cannot be used: '+evt.code);
+    } else {
+        writeToScreen('Websocket server cannot be used');
+    }
+    writeToScreen(global_web_socket.url);
+}
+
+global_web_socket.onopen = function(evt) {
+    $("#messageForm").show();
+    console.log('Opened!!');
+}
+
+global_web_socket.onmessage = function(evt) {
     writeToScreen('<span style="color: blue;">RECEIVE: ' + evt.data+'</span>');
     // Don't close
 };
 
 $( "#messageForm" ).submit(function( event ) {
- 
+
   // Stop form from submitting normally
   event.preventDefault();
- 
+
   // Get some values from elements on the page:
   var form = $( this )
   var message = form.find( "input[name='message']" ).val();
