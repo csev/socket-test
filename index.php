@@ -46,8 +46,10 @@ $OUTPUT->footerStart();
     output.appendChild(pre);
   }
 
-global_web_socket = new WebSocket('ws://localhost:2021/notify?xyzzy=42&room=14');
+// global_web_socket = new WebSocket(_TSUGI.websocket_url+'/notify?xyzzy=42&room=14');
+global_web_socket = tsugiNotifySocket(14);
 
+if ( global_web_socket ) {
 global_web_socket.onclose = function(evt) {
     if ( evt.code == 1006 ) {
         writeToScreen('Websocket server is not available');
@@ -68,6 +70,9 @@ global_web_socket.onmessage = function(evt) {
     writeToScreen('<span style="color: blue;">RECEIVE: ' + evt.data+'</span>');
     // Don't close
 };
+} else {
+        writeToScreen('Tsugi does not have a websocket_url configured');
+}
 
 $( "#messageForm" ).submit(function( event ) {
 
