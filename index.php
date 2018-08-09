@@ -75,7 +75,7 @@ function writeToScreen(message)
 }
 
 // Request a socket in room 42 - room can be omitted
-global_web_socket = tsugiNotifySocket(42);
+global_web_socket = tsugiNotifySocket("place_42");
 open_worked = false;
 
 // returns false if there is no socket configured
