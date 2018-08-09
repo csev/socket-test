@@ -15,7 +15,7 @@ $REGISTER_LTI2 = array(
     "analytics" => array(
         "internal"
     ),
-    "source_url" => "https://github.com/tsugicontrib/socket-test",
+    "source_url" => "https://github.com/tsugiproject/socket-test",
     // For now Tsugi tools delegate this to /lti/store
     "placements" => array(
         /*
