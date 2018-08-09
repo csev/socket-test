@@ -19,7 +19,7 @@ socket server for your local Tsugi as follows:
     cd tsugi/admin
     php rachet.php
 
-Leave this running - it logs activity of opening, closing, and messaging
+Leave`rachet` running - it logs activity of opening, closing, and messaging
 for the web sockets it is managing.
 
 Then you need to open the `socket-test` tool in 2 or three windows with each windows
@@ -38,29 +38,7 @@ sockets.
 Browser Notification Service
 ----------------------------
 
-WebSockets and frameworks like SocketIO that build atop WebSocket connections
-allow for a very rich way of developing multi-browser low-latency interactions.
+You can get more information on how Tsugi implements WebSockets at
 
-Tsugi cannot make that rich fabric available in a reliable way, so
-we provide a simple, generic service that works across all tools reliably
-that does not compromise the integrity or memory footprint of the socket server.
-So Tsugi only provides a single broadcast notification service.  All the browsers
-in a particular link in a particular course have a secure and isolated space.
-
-The application can make "rooms" within that space using whatever room naming convention
-it likes.  The rooms are isolated by room name through security-by-obscurity.  To
-get a notification socket, the pplication makes the following call in JavaScript
-when it is loaded:
-
-    var global_web_socket = tsugiNotifySocket("place_42");
-
-This will return false if web sockets are not enabled on the Tsugi server.  But
-you won't know that the web socket can be used until the `onopen()` method
-is called or the `readyState` attribute is OPEN.  A failure to open 
-might be due to bad token or missing server.
-
-See the source code in `index.php` to see how to open and use or handle falures with
-the Tsugi notification sockets.
-
-
+    http://do1.dr-chuck.com/tsugi/phpdoc/Tsugi/Core/WebSocket.html
 
