@@ -1,6 +1,6 @@
 <?php
 
-$REGISTER_LTI2 = array(
+$REGISTER_LTI = array(
 "name" => "Socket-Test",
 "FontAwesome" => "fa-wrench",
 "short_name" => "Socket-Test",
